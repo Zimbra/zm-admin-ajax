@@ -33,6 +33,9 @@ ZLoginFactory.PASSWORD_CONFIRM_TR_ID = "ZLoginNewPassword2Tr";
 ZLoginFactory.PASSWORD_CONFIRM_ID = "newpass2";
 ZLoginFactory.LOGIN_BUTTON_ID = "ZLoginButton";
 ZLoginFactory.MORE_ID = "ZLoginMore";
+ZLoginFactory.TWO_FACTOR_CODE = "ZTwoFactorCode";
+ZLoginFactory.TWO_FACTOR_CODE_FORM = "ZTwoFactorCodeForm";
+ZLoginFactory.VERIFY_BUTTON_ID = "ZTwoFactorVerifyButton";
 
 // Constants for tabbing through the login controls.
 ZLoginFactory.TEXT_TYPE = 0;
@@ -41,10 +44,10 @@ ZLoginFactory.BUTTON_TYPE = 2;
 
 ZLoginFactory.TAB_ORDER = [ZLoginFactory.USER_ID, ZLoginFactory.PASSWORD_ID, 
 					 ZLoginFactory.NEW_PASSWORD_ID, ZLoginFactory.PASSWORD_CONFIRM_ID,
-					 ZLoginFactory.REMEMBER_ME_ID, ZLoginFactory.LOGIN_BUTTON_ID];
+					 ZLoginFactory.REMEMBER_ME_ID, ZLoginFactory.LOGIN_BUTTON_ID, ZLoginFactory.VERIFY_BUTTON_ID];
 ZLoginFactory.VISIBILITY = [ZLoginFactory.USER_ID, ZLoginFactory.PASSWORD_ID, 
 					  ZLoginFactory.NEW_PASSWORD_TR_ID, ZLoginFactory.PASSWORD_CONFIRM_TR_ID,
-					  ZLoginFactory.REMEMBER_ME_CONTAINER_ID, ZLoginFactory.LOGIN_BUTTON_ID];
+					  ZLoginFactory.REMEMBER_ME_CONTAINER_ID, ZLoginFactory.LOGIN_BUTTON_ID, ZLoginFactory.VERIFY_BUTTON_ID];
 ZLoginFactory.TAB_TYPE = [ZLoginFactory.TEXT_TYPE, ZLoginFactory.TEXT_TYPE, 
 					ZLoginFactory.TEXT_TYPE, ZLoginFactory.TEXT_TYPE,
 					ZLoginFactory.CHECKBOX_TYPE, ZLoginFactory.BUTTON_TYPE];
@@ -105,7 +108,11 @@ function(msgs) {
 		showButton : true,
 		buttonName : msgs["login"] || "",
 		
-		copyrightText : msgs["splashScreenCopyright"] || ""
+		copyrightText : msgs["splashScreenCopyright"] || "",
+
+		twoFactorCodeTitle: msgs["twoFactorCodeTitle"] || "",
+		twoFactorCodeLabel: msgs["twoFactorCodeLabel"] + ':' || "",
+		twoFactorCodeButton: msgs["twoFactorCodeButton"] || "",
 	};
 };
 
@@ -166,6 +173,10 @@ ZLoginFactory.setLoginButtonName = function (name) 	{	this.setHTML("ZLoginButton
 ZLoginFactory.setLoginButtonAction = function (method) {	var el = document.getElementById(ZLoginFactory.LOGIN_BUTTON_ID); if (el) el.onclick = method	}
 ZLoginFactory.getLoginButton = function () 		{	return this.get(ZLoginFactory.LOGIN_BUTTON_ID);	}
 
+ZLoginFactory.showTwoFactorCode = function () {
+	this.hideForm();
+	this.show(ZLoginFactory.TWO_FACTOR_CODE_FORM);
+}
 
 ZLoginFactory.getLoginDialogHTML = function (params) {
 	var html = [
@@ -178,7 +189,7 @@ ZLoginFactory.getLoginDialogHTML = function (params) {
 					"<table><tr><td width='40'><div class='ImgCritical_32'></div></td><td width='*'><span class='errorText' id='ZLoginErrorMsg'></span></td></tr></table>",
 				"</div>",
 				"<form name='loginForm' method='POST'>",
-					"<table class='form' ", (params.showForm ? " " : "style='display:none'"),">",
+					"<table class='form' id='ZLoginFormPanel'", (params.showForm ? " " : "style='display:none'"),">",
 					"<tr ", (params.showMoreField ? " " : "style='display:none'"), ">",
 						"<td></td>",
 						"<td><span class='Img ImgInformation_xtra_small'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label for='", ZLoginFactory.MORE_ID, "'>",params.moreMsg,"</label></td>",
@@ -213,6 +224,21 @@ ZLoginFactory.getLoginDialogHTML = function (params) {
 							"<label ", (params.showRememberMeCheckbox ? "" : "style='display:none'"), " for='", ZLoginFactory.REMEMBER_ME_ID, "'>", params.rememberMeMsg, "</label>",
 						"</td>",
 					"</tr>",	
+					"</table>",
+					"<table class='form' id='", ZLoginFactory.TWO_FACTOR_CODE_FORM, "'", (params.showTwoFactorForm ? " " : "style='display:none'"), " >",
+						"<tr>",
+							"<td colspan=2 class='ZTwoFactorMessage'>" , params.twoFactorCodeTitle, "</td>",
+						"</tr>",
+						"<tr>",
+							"<td><label for='", ZLoginFactory.TWO_FACTOR_CODE, "'>", params.twoFactorCodeLabel, "</label></td>",
+							"<td><input id='", ZLoginFactory.TWO_FACTOR_CODE, "' name='", ZLoginFactory.TWO_FACTOR_CODE, "' class='zLoginField' type='text' autocomplete='off' size='40' ></td>",
+						"</tr>",
+						"<tr>",
+							"<td>&nbsp;</td>",
+							"<td class='submitTD'>",
+								"<input id='", ZLoginFactory.VERIFY_BUTTON_ID, "' class='ZLoginButton DwtButton' type='button' onclick='", params.loginAction, ";return false' value='", params.twoFactorCodeButton, "' />",
+							"</td>",
+						"</tr>",
 					"</table>",
 				"</form>",
 				"<div id='ZLoginAboutPanel' ", (params.showAbout ? "" : "style='display:none'"), ">", params.aboutMsg,
