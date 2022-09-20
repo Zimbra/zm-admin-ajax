@@ -185,6 +185,8 @@ XModelItem.prototype.addItem = function (item) {
 XModelItem.prototype.getConstraints = function()	{		return this.constraints;	}
 XModelItem.prototype.getRequired = function()		{		return this.required;		}
 XModelItem.prototype.getReadonly = function()		{		return this.readonly;		}
+XModelItem.prototype.getCustomRequiredMessage = function()	{		return this.customRequiredMessage;	}
+XModelItem.prototype.getCustomErrorMessage = function()		{		return this.customErrorMessage;		}
 XModelItem.prototype.getReadOnly = XModelItem.prototype.getReadonly;
 
 
@@ -201,7 +203,8 @@ XModelItem.prototype.validate = function (value, form, formItem, instance) {
 	// see if it's required
 	if (value == null || value === "") {
 		if (this.getRequired()) {
-			throw this.getModel().getErrorMessage("valueIsRequired", value);
+			var errorMessage = this.getCustomRequiredMessage() || "valueIsRequired";
+			throw this.getModel().getErrorMessage(errorMessage, value);
 		}
     }
     
@@ -406,16 +409,17 @@ XModelItem.prototype.validateEmailAddress = function(value) {
  */
 XModelItem.prototype._normalizeAndValidate = function(value) {
 
-    var whiteSpace = this.getWhiteSpace();
-    if (whiteSpace !== null) {
-    	if (whiteSpace === "replace" || whiteSpace === "collapse") {
-    		value = value.replace(/[\t\r\n]/g, " ");
-    	}
-    	if (whiteSpace === "collapse") {
-    		value = value.replace(/^\s+/,"").replace(/\s+$/,"").replace(/[ ]+/, " ");
-    	}
-    }
-	
+	var whiteSpace = this.getWhiteSpace();
+	var stringMismatchErrorMessage;
+	if (whiteSpace !== null) {
+		if (whiteSpace === "replace" || whiteSpace === "collapse") {
+			value = value.replace(/[\t\r\n]/g, " ");
+		}
+		if (whiteSpace === "collapse") {
+			value = value.replace(/^\s+/, "").replace(/\s+$/, "").replace(/[ ]+/, " ");
+		}
+	}
+
     var pattern = this.getPattern();
     if (pattern != null) {
     	var matched = false;
@@ -426,7 +430,8 @@ XModelItem.prototype._normalizeAndValidate = function(value) {
     		}
     	}
 		if (!matched) {
-			throw this.getModel().getErrorMessage("stringMismatch", value);
+			stringMismatchErrorMessage = this.getCustomErrorMessage() || "stringMismatch";
+			throw this.getModel().getErrorMessage(stringMismatchErrorMessage, value);
 		}    	
     }
     
@@ -440,7 +445,8 @@ XModelItem.prototype._normalizeAndValidate = function(value) {
     		}
     	}
     	if (!matched) {
-			throw this.getModel().getErrorMessage("stringMismatch", value);
+			stringMismatchErrorMessage = this.getCustomErrorMessage() || "stringMismatch";
+			throw this.getModel().getErrorMessage(stringMismatchErrorMessage, value);
     	}
     }
     
