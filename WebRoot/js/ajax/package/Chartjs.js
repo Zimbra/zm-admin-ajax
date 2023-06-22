@@ -21,4 +21,4 @@
  * ***** END LICENSE BLOCK *****
  */
 // by default all 3rd party libraries will be shipped in minified version only as there will not be many instances where we will need to debug 3rd party code
-AjxPackage.require("ajax.3rdparty.chartjs.Chart_min");
+AjxPackage.require("ajax.3rdparty.chartjs.chart_umd");
