@@ -35,6 +35,15 @@ ZLoginFactory.LOGIN_BUTTON_ID = "ZLoginButton";
 ZLoginFactory.MORE_ID = "ZLoginMore";
 ZLoginFactory.TWO_FACTOR_CODE = "ZTwoFactorCode";
 ZLoginFactory.TWO_FACTOR_CODE_FORM = "ZTwoFactorCodeForm";
+ZLoginFactory.TWO_FACTOR_RESEND_CODE_TR_ID = "ZTwoFactorResendCodeTd";
+ZLoginFactory.TWO_FACTOR_RESEND_CODE_LINK_A_ID = "ZTwoFactorResendCodeLinkA";
+ZLoginFactory.TWO_FACTOR_CODE_RESENT_STATUS_SPAN_ID = "ZTwoFactorCodeResentStatusSpan";
+ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_TR_ID = "ZTwoFactorChooseMethodTr";
+ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_LINK_A_ID = "ZTwoFactorChooseMethodLinkA";
+ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_FORM = "ZTwoFactorChooseMethodForm";
+ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_NEXT_BUTTON = "ZTwoFactorChooseMethodNextButton";
+ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_BACK_BUTTON = "ZTwoFactorChooseMethodBackButton";
+ZLoginFactory.TWO_FACTOR_METHOD_OPTION_CONTAINER_TD_ID = "ZTwoFactorMethodOptionContainerTD";
 ZLoginFactory.VERIFY_BUTTON_ID = "ZTwoFactorVerifyButton";
 
 // Constants for tabbing through the login controls.
@@ -173,9 +182,15 @@ ZLoginFactory.setLoginButtonName = function (name) 	{	this.setHTML("ZLoginButton
 ZLoginFactory.setLoginButtonAction = function (method) {	var el = document.getElementById(ZLoginFactory.LOGIN_BUTTON_ID); if (el) el.onclick = method	}
 ZLoginFactory.getLoginButton = function () 		{	return this.get(ZLoginFactory.LOGIN_BUTTON_ID);	}
 
+ZLoginFactory.showTwoFactorCodeForm = function () { this.show(ZLoginFactory.TWO_FACTOR_CODE_FORM); }
+ZLoginFactory.hideTwoFactorCodeForm = function () { this.hide(ZLoginFactory.TWO_FACTOR_CODE_FORM); }
+
+ZLoginFactory.showTwoFactorChooseMethod = function () { this.show(ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_FORM); }
+ZLoginFactory.hideTwoFactorChooseMethod = function () { this.hide(ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_FORM); }
+
 ZLoginFactory.showTwoFactorCode = function () {
 	this.hideForm();
-	this.show(ZLoginFactory.TWO_FACTOR_CODE_FORM);
+	this.showTwoFactorCodeForm();
 }
 
 ZLoginFactory.getLoginDialogHTML = function (params) {
@@ -229,14 +244,41 @@ ZLoginFactory.getLoginDialogHTML = function (params) {
 						"<tr>",
 							"<td colspan=2 class='ZTwoFactorMessage'>" , params.twoFactorCodeTitle, "</td>",
 						"</tr>",
+						"<tr id='", ZLoginFactory.TWO_FACTOR_RESEND_CODE_TR_ID, "' style='text-align:right; display:none'>",
+							"<td colspan=2'>",
+							"<a id='", ZLoginFactory.TWO_FACTOR_RESEND_CODE_LINK_A_ID, "' class='ZTwoFactorResendCode' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmail, "</a>",
+							"<span id='", ZLoginFactory.TWO_FACTOR_CODE_RESENT_STATUS_SPAN_ID, "' class='ZTwoFactorCodeResent' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmailDone, "</span>",
+						"</tr>",
 						"<tr>",
 							"<td><label for='", ZLoginFactory.TWO_FACTOR_CODE, "'>", params.twoFactorCodeLabel, "</label></td>",
 							"<td><input id='", ZLoginFactory.TWO_FACTOR_CODE, "' name='", ZLoginFactory.TWO_FACTOR_CODE, "' class='zLoginField' type='text' autocomplete='off' size='40' ></td>",
+						"</tr>",
+						"<tr id='" , ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_TR_ID, "' style='text-align:right; display:none'>",
+							"<td colspan=2><a id='", ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_LINK_A_ID, "' class='ZTwoFactorChooseMethodLink' href='#'>", ZaMsg.twoFactorAuthChooseOtherMethod, "</a></td>",
 						"</tr>",
 						"<tr>",
 							"<td>&nbsp;</td>",
 							"<td class='submitTD'>",
 								"<input id='", ZLoginFactory.VERIFY_BUTTON_ID, "' class='ZLoginButton DwtButton' type='button' onclick='", params.loginAction, ";return false' value='", params.twoFactorCodeButton, "' />",
+							"</td>",
+						"</tr>",
+					"</table>",
+					"<table class='form' id='", ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_FORM, "' style='display:none'>",
+						"<tr>",
+							"<td colspan=2 class='ZTwoFactorMessage'>" , params.twoFactorCodeTitle, "</td>",
+						"</tr>",
+						"<tr class='ZTwoFactorMethodDescription'>",
+							"<td colspan=2>", ZaMsg.twoFactorAuthChooseOtherMethodDescription, "</td>",
+						"</tr>",
+						"<tr class='ZTwoFactorMethodOptionContainer'>",
+							"<td colspan=2 id='", ZLoginFactory.TWO_FACTOR_METHOD_OPTION_CONTAINER_TD_ID, "'</td>",
+						"</tr>",
+						"<tr>",
+							"<td class='submitTD ZTwoFactorNextButton'>",
+								"<input id='", ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_NEXT_BUTTON, "' class='ZLoginButton DwtButton' type='button' value='", ZaMsg.Next, "' />",
+							"</td>",
+							"<td class='submitTD ZTwoFactorBackButton'>",
+								"<input id='", ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_BACK_BUTTON, "' class='ZLoginButton DwtButton' type='button' value='", ZaMsg.twoFactorAuthChooseMethodBack, "' />",
 							"</td>",
 						"</tr>",
 					"</table>",
