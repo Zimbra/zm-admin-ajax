@@ -35,7 +35,8 @@ ZLoginFactory.LOGIN_BUTTON_ID = "ZLoginButton";
 ZLoginFactory.MORE_ID = "ZLoginMore";
 ZLoginFactory.TWO_FACTOR_CODE = "ZTwoFactorCode";
 ZLoginFactory.TWO_FACTOR_CODE_FORM = "ZTwoFactorCodeForm";
-ZLoginFactory.TWO_FACTOR_RESEND_CODE_TR_ID = "ZTwoFactorResendCodeTd";
+ZLoginFactory.TWO_FACTOR_CODE_TR_ID = "ZTwoFactorCodeTd";
+ZLoginFactory.TWO_FACTOR_CODE_LABEL = "ZTwoFactorCodeLabel";
 ZLoginFactory.TWO_FACTOR_RESEND_CODE_LINK_A_ID = "ZTwoFactorResendCodeLinkA";
 ZLoginFactory.TWO_FACTOR_CODE_RESENT_STATUS_SPAN_ID = "ZTwoFactorCodeResentStatusSpan";
 ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_TR_ID = "ZTwoFactorChooseMethodTr";
@@ -244,14 +245,15 @@ ZLoginFactory.getLoginDialogHTML = function (params) {
 						"<tr>",
 							"<td colspan=2 class='ZTwoFactorMessage'>" , params.twoFactorCodeTitle, "</td>",
 						"</tr>",
-						"<tr id='", ZLoginFactory.TWO_FACTOR_RESEND_CODE_TR_ID, "' style='text-align:right; display:none'>",
-							"<td colspan=2'>",
-							"<a id='", ZLoginFactory.TWO_FACTOR_RESEND_CODE_LINK_A_ID, "' class='ZTwoFactorResendCode' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmail, "</a>",
-							"<span id='", ZLoginFactory.TWO_FACTOR_CODE_RESENT_STATUS_SPAN_ID, "' class='ZTwoFactorCodeResent' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmailDone, "</span>",
+						"<tr id='", ZLoginFactory.TWO_FACTOR_CODE_TR_ID, "' style='display:none'>",
+							"<td style='text-align:left'><label id='", ZLoginFactory.TWO_FACTOR_CODE_LABEL, "' for='", ZLoginFactory.TWO_FACTOR_CODE, "'>", params.twoFactorCodeLabel, "</label></td>",
+							"<td style='text-align:right'>",
+								"<a id='", ZLoginFactory.TWO_FACTOR_RESEND_CODE_LINK_A_ID, "' class='ZTwoFactorResendCode' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmail, "</a>",
+								"<span id='", ZLoginFactory.TWO_FACTOR_CODE_RESENT_STATUS_SPAN_ID, "' class='ZTwoFactorCodeResent' href='#' style='display:none'>", ZaMsg.twoFactorAuthResendEmailDone, "</span>",
+							"</td>",
 						"</tr>",
 						"<tr>",
-							"<td><label for='", ZLoginFactory.TWO_FACTOR_CODE, "'>", params.twoFactorCodeLabel, "</label></td>",
-							"<td><input id='", ZLoginFactory.TWO_FACTOR_CODE, "' name='", ZLoginFactory.TWO_FACTOR_CODE, "' class='zLoginField' type='text' autocomplete='off' size='40' ></td>",
+							"<td colspan=2'><input id='", ZLoginFactory.TWO_FACTOR_CODE, "' name='", ZLoginFactory.TWO_FACTOR_CODE, "' class='zLoginField' type='text' autocomplete='off' size='40' ></td>",
 						"</tr>",
 						"<tr id='" , ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_TR_ID, "' style='text-align:right; display:none'>",
 							"<td colspan=2><a id='", ZLoginFactory.TWO_FACTOR_CHOOSE_METHOD_LINK_A_ID, "' class='ZTwoFactorChooseMethodLink' href='#'>", ZaMsg.twoFactorAuthChooseOtherMethod, "</a></td>",
