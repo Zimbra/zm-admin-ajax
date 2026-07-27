@@ -5620,3 +5620,65 @@ Dwt_ProgressBar_XFormItem.prototype.updateWidget = function(newvalue) {
 	}
 	this.getWidget().setValue(newvalue);
 }
+
+/**
+ * @class defines XFormItem type _FILE_SELECTOR_
+ * @constructor
+ *
+ * @private
+ */
+FileSelector_XFormItem = function() {}
+XFormItemFactory.createItemType("_FILE_SELECTOR_", "file_selector", FileSelector_XFormItem, XFormItem)
+
+FileSelector_XFormItem.prototype.width = "100%";
+FileSelector_XFormItem.prototype.height = 100;
+FileSelector_XFormItem.prototype.focusable = true;
+FileSelector_XFormItem.prototype.inputId = null;
+FileSelector_XFormItem.prototype.inputName = null;
+
+// methods
+FileSelector_XFormItem.prototype.outputHTML = function (html) {
+	var labelRef = this.getInheritedProperty("labelRef");
+	if (labelRef == "") labelRef = "&nbsp;";
+	var labelStyle = this.getLabelCssStyle();
+	if (labelStyle == null) labelStyle = "";
+	labelStyle = "position:relative;text-align:left;padding-left:10px;padding-right:10px;" + labelStyle;
+
+	var formAction = this.getInheritedProperty('formAction');
+	if (formAction) {
+		formAction = " action=\"" + formAction + "\"";
+	}
+	var formStyle = this.getInheritedProperty('formStyle');
+	if (formStyle) {
+		formStyle = " style=\"" + formStyle + "\"";
+	}
+	var inputId = this.getId() + "_" + this.getInheritedProperty('inputId');
+	var inputName = this.getInheritedProperty('inputName');
+
+	this._fileSelectorInputId = inputId;
+
+	if (labelRef != null) {
+		html.append(
+			"<label id=\"", this.getId(),"___labelValue\"",
+				this.getLabelCssString(null, labelStyle),
+				" for=\"", inputId, "\">",
+				labelRef,
+			"</label>"
+		);
+	}
+
+	html.append(
+		"<form method=\"POST\" id=\"", this.getId(), "\"", "enctype=\"multipart/form-data\"", formStyle, formAction, ">",
+			"<input id=\"", inputId, "\" type=\"file\" name=\"" , inputName, "\"", this.getCssString(), "/>",
+		"</form>"
+	);
+}
+
+FileSelector_XFormItem.prototype.updateElement = function() {
+	if (!this._fileSelectorInputId) return;
+
+	var element = document.getElementById(this._fileSelectorInputId);
+	if (element && element.value) {
+		element.value = "";
+	}
+}
