@@ -33,6 +33,7 @@
  */
 XFormItemFactory = function() {}
 
+XFormItemFactory.MULTIPLE_VALUE_REF_PATH_REGEX = /\[\d+\]/;
 /**
  * Creates a form item.
  *
@@ -46,6 +47,10 @@ XFormItemFactory.createItem = function (attributes, parentItem, xform) {
 	// assign a modelItem to the item
 	var refPath = this.getRefPath(attributes, parentItem);
 	var subRefPath = this.getSubRefPath(attributes, parentItem);
+	var parentRefPath;
+	if (refPath && refPath.search(XFormItemFactory.MULTIPLE_VALUE_REF_PATH_REGEX) !== -1) {
+		parentRefPath = parentItem && (parentItem.parentRefPath || parentItem.refPath);
+	}
 
 	var modelItem, subModelItem;
 	if (refPath != null) {
@@ -76,6 +81,7 @@ XFormItemFactory.createItem = function (attributes, parentItem, xform) {
 
 	item.refPath = refPath;
 	item.subRefPath = subRefPath;
+	item.parentRefPath = parentRefPath;
 	item.__modelItem = modelItem;
 	item.__subModelItem = subModelItem;
 	
