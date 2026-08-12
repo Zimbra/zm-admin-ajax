@@ -5407,6 +5407,9 @@ Dwt_Alert_XFormItem.prototype.labelLocation = _NONE_;
 Dwt_Alert_XFormItem.prototype.getStyle = function() {
 	return this.getInheritedProperty("style");
 }
+Dwt_Alert_XFormItem.prototype.getIsSmallIcon = function() {
+	return this.getInheritedProperty("smallIcon");
+}
 Dwt_Alert_XFormItem.prototype.getIconVisible = function() {
 	return this.getInheritedProperty("iconVisible");
 }
@@ -5422,6 +5425,7 @@ Dwt_Alert_XFormItem.prototype.getAlertCssClass = function() {
 
 Dwt_Alert_XFormItem.prototype.constructWidget = function() {
 	var style = this.getStyle();
+	var isSmallIcon = this.getIsSmallIcon() || false;
 	var iconVisible = this.getIconVisible();
 	var title = this.getTitle();
 	var content = this.getContent();
@@ -5430,7 +5434,7 @@ Dwt_Alert_XFormItem.prototype.constructWidget = function() {
 	var form = this.getForm();
 	var alert = new DwtAlert(form, alertCssClass);
 	
-	alert.setStyle(style);
+	alert.setStyle(style, isSmallIcon);
 	alert.setIconVisible(iconVisible);
 	alert.setTitle(title);
 	alert.setContent(content);

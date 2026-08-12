@@ -73,7 +73,10 @@ DwtAlert._ICONS = [
     AjxImg.getClassForImage("Information_32"),
     AjxImg.getClassForImage("Warning_32"),
     AjxImg.getClassForImage("Critical_32"),
-    AjxImg.getClassForImage("Success")
+    AjxImg.getClassForImage("Success"),
+    AjxImg.getClassForImage("Information"),
+    AjxImg.getClassForImage("Warning"),
+    AjxImg.getClassForImage("Critical")
 ];
 DwtAlert._CLASSES = [
     "DwtAlertInfo",
@@ -100,10 +103,11 @@ DwtAlert.prototype.TEMPLATE = "dwt.Widgets#DwtAlert";
  * 
  * @param	{DwtAlert.INFORMATION|DwtAlert.WARNING|DwtAlert.CRITICAL|DwtAlert.SUCCESS}	style		the style
  */
-DwtAlert.prototype.setStyle = function(style) {
+DwtAlert.prototype.setStyle = function(style, isSmallIcon) {
 	this._alertStyle = style || DwtAlert.INFORMATION;
 	if (this._iconDiv) {
-		Dwt.delClass(this._iconDiv, DwtAlert._RE_ICONS, DwtAlert._ICONS[this._alertStyle]);
+		var indexShift = (style !== DwtAlert.SUCCESS && isSmallIcon) ? 4 : 0;
+		Dwt.delClass(this._iconDiv, DwtAlert._RE_ICONS, DwtAlert._ICONS[this._alertStyle + indexShift]);
 	}
 	Dwt.delClass(this.getHtmlElement(), DwtAlert._RE_CLASSES, DwtAlert._CLASSES[this._alertStyle]);
 };
